@@ -1,3 +1,5 @@
+# vim:fileencoding=utf-8
+
 describe 'Docker Build Server API' do
   include Rack::Test::Methods
 
@@ -7,7 +9,7 @@ describe 'Docker Build Server API' do
 
   it 'redirects "GET /" to "GET /index.html"' do
     get '/'
-    last_response.status.should == 301
+    last_response.status.should eql(301)
     last_response.location.should == '/index.html'
   end
 
@@ -22,7 +24,7 @@ describe 'Docker Build Server API' do
       let(:doc) { Nokogiri::HTML(last_response.body) }
 
       it 'is text/html' do
-        last_response.content_type.should =~ %r{text/html\s*;\s*charset=utf-8}
+        last_response.content_type.should =~ /text\/html\s*;\s*charset=utf-8/
       end
 
       it 'has a form for requesting builds' do
@@ -34,27 +36,28 @@ describe 'Docker Build Server API' do
       context "when request method is #{request_method}" do
         before { send(request_method.downcase, '/index.html') }
 
-        it 'responds 405' do
-          last_response.status.should == 405
+        it 'responds 404' do
+          last_response.status.should == 404
         end
       end
     end
   end
 
   it 'responds to "POST /docker-build"' do
-    post '/docker-build', '{}', {'HTTP_ACCEPT' => 'application/json'}
+    post '/docker-build', '{}', { 'HTTP_ACCEPT' => 'application/json' }
     last_response.status.should == 201
   end
 
   describe '/docker-build' do
     context 'when Accept is application/json' do
       before do
-        post '/docker-build', '{}', {'HTTP_ACCEPT' => 'application/json'}
+        post '/docker-build', '{}', { 'HTTP_ACCEPT' => 'application/json' }
       end
       let(:body) { JSON.parse(last_response.body) }
 
       it 'is application/json' do
-        last_response.content_type.should =~ %r{application/json\s*;\s*charset=utf-8}
+        last_response.content_type.should =~
+          /application\/json\s*;\s*charset=utf-8/
       end
 
       it 'is valid JSON' do
@@ -64,14 +67,14 @@ describe 'Docker Build Server API' do
 
     context 'when Accept is text/html' do
       before do
-        post '/docker-build', {'foo' => 'bar'},
-          {'HTTP_ACCEPT' => 'text/html'}
+        post '/docker-build', { 'foo' => 'bar' },
+             { 'HTTP_ACCEPT' => 'text/html' }
       end
 
       let(:body) { JSON.parse(last_response.body) }
 
       it 'redirects to "/index.html"' do
-        last_response.status.should == 301
+        last_response.status.should eql(301)
         last_response.location.should == '/index.html'
       end
     end
