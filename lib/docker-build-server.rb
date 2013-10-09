@@ -1,5 +1,2 @@
 # vim:fileencoding=utf-8
-
-class DockerBuildServer
-  VERSION = '0.1.0'
-end
+require_relative 'docker_build_server'
