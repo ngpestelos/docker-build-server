@@ -18,6 +18,15 @@ class DockerBuildServer < Sinatra::Base
     enable :logging, :dump_errors, :raise_errors, :show_exceptions
   end
 
+  Sidekiq.configure_client do |config|
+    config.redis = {
+      url: ENV['REDIS_URL'] || 'redis://localhost:6379/',
+      namespace: (
+        ENV['REDIS_NAMESPACE'] || 'docker-build-server'
+      ).sub(/:$/, '')
+    }
+  end
+
   enable :sessions
 
   get '/' do

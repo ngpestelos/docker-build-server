@@ -11,8 +11,10 @@ apt-get install -yq \
   build-essential \
   curl \
   git-core \
-  redis-server \
+  libxml2-dev \
+  libxslt1-dev \
   mercurial \
+  redis-server \
   vim-nox
 
 ln -svf /vagrant/.vagrant-skel/redis.conf /etc/redis/redis.conf
@@ -54,6 +56,7 @@ set -e
 
 ln -svf /vagrant/.vagrant-skel/bashrc /home/vagrant/.bashrc
 ln -svf /vagrant/.vagrant-skel/profile /home/vagrant/.profile
+rm -vf /home/vagrant/.bash_profile
 
 set +e
 source ~/.profile
@@ -71,16 +74,28 @@ set -e
 gvm use go1.1.2
 mkdir -p \${GOPATH%%:*}/src
 pushd \${GOPATH%%:*}/src
-if [ ! -d dbw ] ; then
-  git clone https://github.com/modcloth-labs/docker-build-worker.git dbw
+if [ -f /docker-build-worker/Makefile ] ; then
+  if [ -e ./dbw ] ; then
+    rm -rvf ./dbw
+  fi
+  ln -svf /docker-build-worker ./dbw
 else
-  pushd dbw
-  git fetch --all
-  git checkout -qf master
-  popd
+  if [ ! -d dbw ] ; then
+    git clone https://github.com/modcloth-labs/docker-build-worker.git dbw
+  else
+    pushd dbw
+    git fetch --all
+    git checkout -qf master
+    popd
+  fi
 fi
 pushd dbw
 make build
+
+curl -L https://get.rvm.io | bash -s stable --ruby=2.0.0
+source ~/.bash_profile
+gem install bundler foreman
+
 mkdir -p ~/.ssh
 chmod 0700 ~/.ssh
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
