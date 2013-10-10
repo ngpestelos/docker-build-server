@@ -2,6 +2,8 @@
 require 'json'
 require 'sinatra/base'
 require 'sinatra/contrib'
+require_relative 'docker_build'
+require_relative 'docker_build_params'
 
 class DockerBuildServer < Sinatra::Base
   VERSION = '0.1.0'
@@ -19,8 +21,7 @@ class DockerBuildServer < Sinatra::Base
   enable :sessions
 
   get '/' do
-    status 301
-    headers 'Location' => '/index.html'
+    redirect 'index.html', 301
   end
 
   get '/index.html', provides: [:html, :json] do
@@ -31,21 +32,30 @@ class DockerBuildServer < Sinatra::Base
   end
 
   post '/docker-build' do
-    build_response = {
-      'message' => "Building #{params[:repo].inspect} " <<
-                   "at #{params[:ref].inspect}"
-    }
     respond_to do |f|
       f.html do
+        build_response = docker_build(params.to_hash)
         session['flash'] = build_response['message']
-        status 301
-        headers 'Location' => '/index.html'
+        redirect 'index.html', 301
       end
       f.json do
+        build_response = docker_build(JSON.parse(request.body.read))
         status 201
         body JSON.pretty_generate(build_response) + "\n"
       end
     end
+  end
+
+  def docker_build(params)
+    build_params = DockerBuildParams.new(params.to_hash)
+    halt 400 unless build_params.valid?
+
+    DockerBuild.perform_async(build_params.to_hash)
+
+    {
+      'message' => "Building #{params['repo'].inspect} " <<
+                   "at #{params['ref'].inspect}"
+    }
   end
 
   def title

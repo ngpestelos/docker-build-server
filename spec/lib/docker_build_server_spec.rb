@@ -10,7 +10,7 @@ describe 'Docker Build Server API' do
   it 'redirects "GET /" to "GET /index.html"' do
     get '/'
     last_response.status.should eql(301)
-    last_response.location.should == '/index.html'
+    last_response.location.should =~ /index\.html$/
   end
 
   it 'responds to "GET /index.html"' do
@@ -75,7 +75,7 @@ describe 'Docker Build Server API' do
 
       it 'redirects to "/index.html"' do
         last_response.status.should eql(301)
-        last_response.location.should == '/index.html'
+        last_response.location.should =~ /index\.html$/
       end
     end
   end
