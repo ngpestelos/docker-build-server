@@ -2,3 +2,8 @@ language: ruby
 rvm:
 - 2.0.0
 - 1.9.3
+env:
+  global:
+  - COVERAGE=true
+notifications:
+  email: github+docker-build-server@modcloth.com

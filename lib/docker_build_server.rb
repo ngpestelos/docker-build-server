@@ -7,9 +7,16 @@ class DockerBuildServer < Sinatra::Base
   VERSION = '0.1.0'
   register Sinatra::Contrib
 
+  set :root, File.expand_path('../', __FILE__)
+  set :views, "#{settings.root}/docker_build_server/views"
+  set :public_dir, "#{settings.root}/docker_build_server/public"
+
+  configure :development do
+    set :session_secret, 'brzzzt'
+    enable :logging, :dump_errors, :raise_errors, :show_exceptions
+  end
+
   enable :sessions
-  set :views, File.expand_path('../docker_build_server/views', __FILE__)
-  configure(:development) { set :session_secret, 'brzzzt' }
 
   get '/' do
     status 301
