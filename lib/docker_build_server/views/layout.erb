@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style type="text/css">
+      body {
+        color: #202030;
+        background: #fefefe;
+        font-family: monospace;
+        font-size: 1.1em;
+        max-width: 40em;
+        margin-top: 2em;
+        margin-right: 2em auto;
+        margin-left: 2em auto;
+      }
+
+      #flash_message {
+        width: 100%;
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 10px;
+        color: #fefefe;
+        background: #fa2020;
+      }
+
+      #docker_build .row {
+        margin-top: 0.5rem;
+      }
+
+      #docker_build .row input[type=text] {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>

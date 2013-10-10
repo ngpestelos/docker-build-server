@@ -4,9 +4,12 @@ require 'sinatra/base'
 require 'sinatra/contrib'
 
 class DockerBuildServer < Sinatra::Base
+  VERSION = '0.1.0'
   register Sinatra::Contrib
 
-  VERSION = '0.1.0'
+  enable :sessions
+  set :views, File.expand_path('../docker_build_server/views', __FILE__)
+  configure(:development) { set :session_secret, 'brzzzt' }
 
   get '/' do
     status 301
@@ -15,15 +18,19 @@ class DockerBuildServer < Sinatra::Base
 
   get '/index.html', provides: [:html, :json] do
     respond_to do |f|
-      f.html { DOCKER_BUILD_INDEX_HTML.result(binding) }
+      f.html { erb :index }
       f.json { JSON.pretty_generate({ nobody: :home }) }
     end
   end
 
   post '/docker-build' do
-    build_response = {}
+    build_response = {
+      'message' => "Building #{params[:repo].inspect} " <<
+                   "at #{params[:ref].inspect}"
+    }
     respond_to do |f|
       f.html do
+        session['flash'] = build_response['message']
         status 301
         headers 'Location' => '/index.html'
       end
@@ -33,26 +40,8 @@ class DockerBuildServer < Sinatra::Base
       end
     end
   end
-end
 
-DOCKER_BUILD_INDEX_HTML = ERB.new(<<-EOTMPL)
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Docker Build Server</title>
-    <style type="text/css">
-      body { font-family: monospace; }
-    </style>
-  </head>
-  <body>
-    <h1>Docker Build Server</h1>
-    <form name="docker_build" action="/docker-build" method="post">
-      <label for="repo">Repo</label>
-      <input type="text" name="repo" />
-      <label for="ref">Ref</label>
-      <input type="text" name="ref" />
-      <input type="submit" value="Build!" />
-    </form>
-  </body>
-</html>
-EOTMPL
+  def title
+    @title ||= (ENV['DOCKER_BUILD_SERVER_TITLE'] || 'docker build server')
+  end
+end

@@ -1,0 +1,22 @@
+<% if session['flash'] %>
+  <div id="flash_message"><%= session['flash'] %></div>
+  <% session['flash'] = nil %>
+<% end %>
+<h1><%= title %></h1>
+<form id="docker_build" name="docker_build" action="/docker-build" method="post">
+  <div class="row">
+    <label for="repo">Repo</label>
+  </div>
+  <div>
+    <input type="text" id="repo" name="repo" autofocus />
+  </div>
+  <div class="row">
+    <label for="ref">Ref</label>
+  </div>
+  <div>
+    <input type="text" id="ref" name="ref" />
+  </div>
+  <div class="row">
+    <input type="submit" value="Build!" />
+  </div>
+</form>
