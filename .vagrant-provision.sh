@@ -7,9 +7,13 @@ set -x
 
 apt-get update -yq
 apt-get install -yq \
+  curl \
+  python-software-properties
+apt-add-repository -y ppa:chris-lea/redis-server
+apt-get update -yq
+apt-get install -yq \
   bison \
   build-essential \
-  curl \
   git-core \
   libxml2-dev \
   libxslt1-dev \
