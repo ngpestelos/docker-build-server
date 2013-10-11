@@ -66,10 +66,10 @@ class DockerBuildServer < Sinatra::Base
 
     DockerBuild.perform_async(build_params.to_hash)
 
-    {
+    build_params.to_hash.merge(
       'message' => "Building #{params['repo'].inspect} " <<
                    "at #{params['ref'].inspect}"
-    }
+    )
   end
 
   def title
