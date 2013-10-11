@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export REDIS_URL="${REDIS_URL:-redis://localhost:6379}"
+export REDIS_NAMESPACE="${REDIS_NAMESPACE:-docker-build-server:}"
+export DOCKER_BUILD_QUEUE="${DOCKER_BUILD_QUEUE:-docker-build}"
+
+cd "$(dirname $0)"
+exec bundle exec unicorn \
+  -c .unicorn.conf \
+  -p "${PORT:-8080}" \
+  -E "${RACK_ENV:-production}"
