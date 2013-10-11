@@ -41,14 +41,19 @@ class DockerBuildServer < Sinatra::Base
   end
 
   post '/docker-build' do
+    build_params = params.to_hash
+    if request.content_type =~ /application\/json/i
+      build_params = JSON.parse(request.body.read)
+    end
+
     respond_to do |f|
       f.html do
-        build_response = docker_build(params.to_hash)
+        build_response = docker_build(build_params)
         session['flash'] = build_response['message']
         redirect 'index.html', 301
       end
       f.json do
-        build_response = docker_build(JSON.parse(request.body.read))
+        build_response = docker_build(build_params)
         status 201
         body JSON.pretty_generate(build_response) + "\n"
       end
