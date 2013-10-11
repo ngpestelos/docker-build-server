@@ -6,7 +6,7 @@ require_relative 'docker_build'
 require_relative 'docker_build_params'
 
 class DockerBuildServer < Sinatra::Base
-  VERSION = '0.1.0'
+  VERSION = '0.1.0' unless defined?(VERSION)
   register Sinatra::Contrib
 
   set :root, File.expand_path('../', __FILE__)
