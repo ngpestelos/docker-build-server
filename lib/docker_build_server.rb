@@ -36,7 +36,7 @@ class DockerBuildServer < Sinatra::Base
   get '/index.html', provides: [:html, :json] do
     respond_to do |f|
       f.html { erb :index }
-      f.json { JSON.pretty_generate({ nobody: :home }) }
+      f.json { JSON.pretty_generate(nobody: :home) }
     end
   end
 
