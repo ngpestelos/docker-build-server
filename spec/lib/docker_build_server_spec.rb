@@ -44,15 +44,18 @@ describe 'Docker Build Server API' do
   end
 
   it 'responds to "POST /docker-build"' do
-    post '/docker-build', '{}', { 'HTTP_ACCEPT' => 'application/json' }
+    post '/docker-build', '{"repo":"foo","ref":"bar"}',
+         { 'HTTP_ACCEPT' => 'application/json' }
     last_response.status.should == 201
   end
 
   describe '/docker-build' do
     context 'when Accept is application/json' do
       before do
-        post '/docker-build', '{}', { 'HTTP_ACCEPT' => 'application/json' }
+        post '/docker-build', '{"repo":"foo","ref":"bar"}',
+             { 'HTTP_ACCEPT' => 'application/json' }
       end
+
       let(:body) { JSON.parse(last_response.body) }
 
       it 'is application/json' do
@@ -67,7 +70,7 @@ describe 'Docker Build Server API' do
 
     context 'when Accept is text/html' do
       before do
-        post '/docker-build', { 'foo' => 'bar' },
+        post '/docker-build', { 'repo' => 'foo', 'ref' => 'bar' },
              { 'HTTP_ACCEPT' => 'text/html' }
       end
 
