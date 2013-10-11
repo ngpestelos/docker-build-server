@@ -3,18 +3,46 @@
   <% session['flash'] = nil %>
 <% end %>
 <h1><%= title %></h1>
-<form id="docker_build" name="docker_build" action="/docker-build" method="post">
+<form id="docker_build" name="docker_build" action="docker-build" method="post">
   <div class="row">
-    <label for="repo">Repo</label>
+    <label for="repo">repo</label>
   </div>
   <div>
-    <input type="text" id="repo" name="repo" autofocus />
+    <input pattern="[-a-zA-Z0-9_/]{2,}" placeholder="<account>/<repository>"
+      size="40" type="text" id="repo" name="repo" required autofocus />
   </div>
   <div class="row">
-    <label for="ref">Ref</label>
+    <label for="ref">ref</label>
   </div>
   <div>
-    <input type="text" id="ref" name="ref" />
+    <input pattern="[-a-zA-Z0-9_]+" placeholder="<any-valid-git-ref>"
+      size="40" type="text" id="ref" name="ref" required />
+  </div>
+  <div class="row">
+    <label for="tag">tag</label>
+  </div>
+  <div>
+    <input pattern="[-a-zA-Z0-9_\.]+[-a-zA-Z0-9_/][-a-zA-Z0-9_]*:?[a-z]?[a-z0-9_]*"
+      placeholder="<namespace>/<project>[:tag]"
+      size="40" type="text" id="tag" name="tag" />
+  </div>
+  <div class="row">
+    <label for="auto_push">auto-push</label>
+  </div>
+  <div>
+    <input type="checkbox" value="true"
+      id="auto_push" name="auto_push" checked />
+  </div>
+
+  <h2>notifications</h2>
+  <div class="row">
+    <label for="notifications_campfire">campfire</label>
+  </div>
+  <div>
+    <input pattern="[a-zA-Z0-9_]+:[a-z0-9]{40}@[0-9]{5,}"
+      placeholder="<subdomain>:<authtoken>@<room>"
+      size="40" type="text" id="notifications_campfire"
+      name="notifications[campfire]" />
   </div>
   <div class="row">
     <input type="submit" value="Build!" />
