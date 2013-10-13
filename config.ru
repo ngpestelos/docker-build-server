@@ -1,6 +1,12 @@
 # vim:fileencoding=utf-8
 require './lib/docker-build-server'
+require 'rack/urlmap'
+require 'rack-auth-travis'
 require 'sidekiq/web'
 
-map('/') { run DockerBuildServer.new }
-map('/sidekiq') { run Sidekiq::Web }
+dbs = DockerBuildServer.new
+run Rack::URLMap.new(
+  '/' => dbs,
+  '/travis' => Rack::Auth::Travis.new(dbs, realm: 'docker-build-server'),
+  '/sidekiq' => Sidekiq::Web.new
+)

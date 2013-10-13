@@ -1,13 +1,15 @@
 # vim:fileencoding=utf-8
-require 'json'
+require 'multi_json'
 require 'sinatra/base'
 require 'sinatra/contrib'
+require 'sinatra/json'
 require_relative 'docker_build'
 require_relative 'docker_build_params'
 
 class DockerBuildServer < Sinatra::Base
   VERSION = '0.1.0' unless defined?(VERSION)
   register Sinatra::Contrib
+  helpers Sinatra::JSON
 
   set :root, File.expand_path('../', __FILE__)
   set :views, "#{settings.root}/docker_build_server/views"
@@ -29,6 +31,12 @@ class DockerBuildServer < Sinatra::Base
 
   enable :sessions
 
+  helpers do
+    def json_body
+      ::MultiJson.decode(request.body)
+    end
+  end
+
   get '/' do
     redirect 'index.html', 301
   end
@@ -36,15 +44,13 @@ class DockerBuildServer < Sinatra::Base
   get '/index.html', provides: [:html, :json] do
     respond_to do |f|
       f.html { erb :index }
-      f.json { JSON.pretty_generate(nobody: :home) }
+      f.json { json nobody: :home }
     end
   end
 
   post '/docker-build' do
     build_params = params.to_hash
-    if request.content_type =~ /application\/json/i
-      build_params = JSON.parse(request.body.read)
-    end
+    build_params = json_body if request.content_type =~ /application\/json/i
 
     respond_to do |f|
       f.html do
@@ -55,7 +61,7 @@ class DockerBuildServer < Sinatra::Base
       f.json do
         build_response = docker_build(build_params)
         status 201
-        body JSON.pretty_generate(build_response) + "\n"
+        json build_response
       end
     end
   end
