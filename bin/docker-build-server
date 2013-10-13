@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# vim:fileencoding=utf-8
+
+require 'docker-build-server'
+
+DockerBuildServer::Runner.new(ARGV).run!

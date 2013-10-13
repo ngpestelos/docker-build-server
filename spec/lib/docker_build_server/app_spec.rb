@@ -1,10 +1,10 @@
 # vim:fileencoding=utf-8
 
-describe 'Docker Build Server API' do
+describe DockerBuildServer::App do
   include Rack::Test::Methods
 
   def app
-    DockerBuildServer.new
+    DockerBuildServer::App.new
   end
 
   it 'redirects "GET /" to "GET /index.html"' do

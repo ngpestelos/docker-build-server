@@ -1,2 +1,10 @@
+AllCops:
+  Includes:
+    - Rakefile
+    - config.ru
+    - Gemfile
+    - bin/docker-build-server
+    - docker-build-server.gemspec
+
 Documentation:
   Enabled: false
