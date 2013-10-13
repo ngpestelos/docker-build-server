@@ -8,8 +8,9 @@ describe DockerBuildServer::Runner do
   context 'without any arguments' do
     subject(:runner) { described_class.new([]) }
 
-    it 'calls Rack::Server.start' do
-      Rack::Server.should_receive(:start)
+    it 'creates a Rack::Server' do
+      Rack::Server.should_receive(:new)
+        .and_return(double('server', start: nil))
       runner.run!
     end
   end

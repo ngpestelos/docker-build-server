@@ -1,5 +1,6 @@
 # vim:fileencoding=utf-8
 
+require 'rack/handler'
 require 'rack/server'
 
 module DockerBuildServer
@@ -11,13 +12,10 @@ module DockerBuildServer
     end
 
     def run!
-      Rack::Server.start(app)
-    end
-
-    private
-
-    def app
-      Builder.app
+      options = Rack::Server::Options.new.parse!(@argv)
+      Rack::Server.new(
+        options.merge(app: DockerBuildServer.app)
+      ).start
     end
   end
 end

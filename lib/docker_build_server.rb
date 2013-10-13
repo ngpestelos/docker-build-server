@@ -6,4 +6,10 @@ module DockerBuildServer
   autoload :Builder, 'docker_build_server/builder'
   autoload :Runner, 'docker_build_server/runner'
   autoload :VERSION, 'docker_build_server/version'
+
+  def app
+    Builder.app
+  end
+
+  module_function :app
 end
