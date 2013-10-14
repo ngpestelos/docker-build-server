@@ -1,10 +1,13 @@
 # vim:fileencoding=utf-8
 require 'multi_json'
 require 'rack-auth-travis'
+require_relative 'json'
 
 module DockerBuildServer
   module Helpers
     module Travis
+      include DockerBuildServer::Helpers::JSON
+
       def rack_auth_travis_request
         @rack_auth_travis_request ||= Rack::Auth::Travis::Request.new(
           request.env, settings.travis_authenticators
