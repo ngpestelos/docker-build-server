@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'multi_json'
-  # spec.add_runtime_dependency 'rack-auth-travis'
+  spec.add_runtime_dependency 'rack-auth-travis'
   spec.add_runtime_dependency 'sidekiq'
   spec.add_runtime_dependency 'sinatra'
   spec.add_runtime_dependency 'sinatra-contrib'
