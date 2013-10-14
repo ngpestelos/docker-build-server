@@ -13,9 +13,6 @@ module DockerBuildServer
       Rack::Builder.app do
         run Rack::URLMap.new(
           '/' => dbs,
-          '/travis' => Rack::Auth::Travis.new(
-            dbs, realm: 'docker-build-server'
-          ),
           '/sidekiq' => Sidekiq::Web.new
         )
       end

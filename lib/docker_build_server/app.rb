@@ -1,19 +1,24 @@
 # vim:fileencoding=utf-8
 require 'multi_json'
+require 'rack-auth-travis'
 require 'sinatra/base'
 require 'sinatra/contrib'
 require 'sinatra/json'
 require_relative '../docker_build'
 require_relative 'build_params'
+require_relative 'helpers'
 
 module DockerBuildServer
   class App < Sinatra::Base
     register Sinatra::Contrib
     helpers Sinatra::JSON
+    helpers DockerBuildServer::Helpers::JSON
+    helpers DockerBuildServer::Helpers::Travis
 
     set :root, File.expand_path('../', __FILE__)
     set :views, "#{settings.root}/views"
     set :public_dir, "#{settings.root}/public"
+    set :travis_authenticators, Rack::Auth::Travis.default_authenticators
 
     configure :development do
       set :session_secret, 'shotgun-hack-hack-hack'
@@ -31,12 +36,6 @@ module DockerBuildServer
 
     enable :sessions
 
-    helpers do
-      def json_body
-        ::MultiJson.decode(request.body)
-      end
-    end
-
     get '/' do
       redirect 'index.html', 301
     end
@@ -50,7 +49,7 @@ module DockerBuildServer
 
     post '/docker-build' do
       build_params = params.to_hash
-      build_params = json_body if request.content_type =~ /application\/json/i
+      build_params = json_body if json?
 
       respond_to do |f|
         f.html do
@@ -64,6 +63,17 @@ module DockerBuildServer
           json build_response
         end
       end
+    end
+
+    post ENV['TRAVIS_WEBHOOK_PATH'] || '/travis-webhook' do
+      halt 401 unless travis_authorized?
+      halt 400 unless travis_payload
+
+      halt 204 if travis_docker_build_disabled?
+
+      build_response = docker_build(travis_build_params)
+      status 201
+      json build_response
     end
 
     def docker_build(params)
