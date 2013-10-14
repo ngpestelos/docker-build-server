@@ -1,10 +1,11 @@
 # vim:fileencoding=utf-8
 
-describe 'Docker Build Server API' do
+describe DockerBuildServer::App do
+  include Support
   include Rack::Test::Methods
 
   def app
-    DockerBuildServer.new
+    DockerBuildServer::App.new
   end
 
   it 'redirects "GET /" to "GET /index.html"' do
@@ -83,6 +84,55 @@ describe 'Docker Build Server API' do
       it 'redirects to "/index.html"' do
         last_response.status.should eql(301)
         last_response.location.should =~ /index\.html$/
+      end
+    end
+  end
+
+  describe Support.travis_webhook_path do
+    context 'when travis authorization is invalid' do
+      before { described_class.any_instance.stub(travis_authorized?: false) }
+
+      it 'responds 401' do
+        post travis_webhook_path, valid_travis_payload_json,
+             { 'CONTENT_TYPE' => 'application/json' }
+        last_response.status.should == 401
+      end
+    end
+
+    context 'when travis authorization is valid' do
+      before do
+        described_class.any_instance.stub(
+          travis_authorized?: true,
+          docker_build: {},
+          travis_build_params: {},
+        )
+      end
+
+      context 'when travis payload is missing' do
+        it 'responds 400' do
+          post travis_webhook_path
+          last_response.status.should == 400
+        end
+      end
+
+      context 'when docker build is disabled in the travis config' do
+        before do
+          described_class.any_instance.stub(
+            travis_docker_build_disabled?: true
+          )
+        end
+
+        it 'responds 204' do
+          post travis_webhook_path, valid_travis_payload_json,
+               { 'CONTENT_TYPE' => 'application/json' }
+          last_response.status.should == 204
+        end
+      end
+
+      it 'responds 201' do
+        post travis_webhook_path, valid_travis_payload_json,
+             { 'CONTENT_TYPE' => 'application/json' }
+        last_response.status.should == 201
       end
     end
   end

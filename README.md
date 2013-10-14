@@ -1,13 +1,24 @@
-# mini-docker-build-server
+# docker-build-server
 
 ## Installation
 
 ``` bash
-gem install mini-docker-build-server
+gem install docker-build-server
 ```
 
 ## Usage
 
+Run via the `rackup` wrapper script:
+
 ``` bash
-mini-docker-build-server --help
+docker-build-server --help
+```
+
+Or do whatever you want inside a `config.ru`:
+
+``` ruby
+# config.ru
+require 'docker-build-server'
+
+run DockerBuildServer.app
 ```
