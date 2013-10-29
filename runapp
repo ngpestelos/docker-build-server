@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 export REDIS_URL="${REDIS_URL:-redis://localhost:6379}"
 export REDIS_NAMESPACE="${REDIS_NAMESPACE:-docker-build-server:}"

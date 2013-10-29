@@ -13,3 +13,11 @@ task :rubocop do
 end
 
 task default: [:rubocop, :spec]
+
+desc 'Build the docker container'
+task :container do
+  sh(%W(docker build
+    -t quay.io/modcloth/docker-build-server:#{ENV['TAG'] || 'latest'}
+    #{File.expand_path('../', __FILE__)}
+  ).join(' ')) { |ok, _| ok || abort }
+end
