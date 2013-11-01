@@ -47,7 +47,7 @@ describe DockerBuildServer::Helpers::Travis do
     helped.travis_payload.should == { 'foo' => 'bar' }
   end
 
-  let(:tag) { "fizz.example.com/buzz:#{rand(100..199)}" }
+  let(:tag) { "fizz.example.com/bar/buzz:#{rand(100..199)}" }
   let(:campfire_cfg) { "flurb:a1b2c3d4@#{rand(50_000..59_999)}" }
   let(:travis_campfire_cfg) { "brrzzt:fabfabfab@#{rand(40_000..49_999)}" }
 
