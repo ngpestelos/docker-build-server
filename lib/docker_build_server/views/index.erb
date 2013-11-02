@@ -45,6 +45,15 @@
       name="notifications[campfire]" />
   </div>
   <div class="row">
+    <label for="notifications_hipchat">hipchat</label>
+  </div>
+  <div>
+    <input pattern="[a-z0-9]{30}@.+"
+      placeholder="<authtoken>@<room>"
+      size="40" type="text" id="notifications_hipchat"
+      name="notifications[hipchat]" />
+  </div>
+  <div class="row">
     <input type="submit" value="Build!" />
   </div>
 </form>

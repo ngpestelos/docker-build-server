@@ -2,9 +2,8 @@
 
 Vagrant.configure('2') do |config|
   config.vm.hostname = 'docker-build-server'
-  config.vm.box = 'precise64'
-  config.vm.box_url = 'http://cloud-images.ubuntu.com/vagrant/precise/' <<
-                      'current/precise-server-cloudimg-amd64-vagrant-disk1.box'
+  config.vm.box = 'dockerprecise64'
+  config.vm.box_url = 'http://bit.ly/dockerprecise64'
 
   config.vm.network :private_network, ip: '33.33.33.10', auto_correct: true
   config.vm.network :forwarded_port, guest: 8080, host: 11_913,
