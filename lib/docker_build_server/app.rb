@@ -14,6 +14,7 @@ module DockerBuildServer
     helpers Sinatra::JSON
     helpers DockerBuildServer::Helpers::JSON
     helpers DockerBuildServer::Helpers::Travis
+    helpers DockerBuildServer::Helpers::Validation
 
     set :root, File.expand_path('../', __FILE__)
     set :views, "#{settings.root}/views"
@@ -51,6 +52,21 @@ module DockerBuildServer
       build_params = params.to_hash
       build_params = json_body if json?
 
+      errors = validate_build_params(build_params)
+      unless errors.empty?
+        respond_to do |f|
+          f.html do
+            session['errors'] = errors
+            status 400
+            erb :index
+          end
+          f.json do
+            status 400
+            json errors: errors
+          end
+        end && return
+      end
+
       respond_to do |f|
         f.html do
           build_response = docker_build(build_params)
@@ -78,13 +94,15 @@ module DockerBuildServer
 
     def docker_build(params)
       build_params = BuildParams.new(params.to_hash)
-      halt 400 unless build_params.valid?
-
       DockerBuild.perform_async(build_params.to_hash)
+
+      return build_params.to_hash.merge(
+        'message' => "Building #{params['url'].inspect}"
+      ) if params['url']
 
       build_params.to_hash.merge(
         'message' => "Building #{params['repo'].inspect} " <<
-        "at #{params['ref'].inspect}"
+                     "at #{params['ref'].inspect}"
       )
     end
 
