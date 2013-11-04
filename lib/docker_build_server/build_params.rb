@@ -5,7 +5,7 @@ module DockerBuildServer
     def initialize(options = {})
       @options = options
       @options['auto_push'] = %w(true 1 yes on).include?(
-        (@options.delete('auto_push') || '').downcase
+        (@options.delete('auto_push') || '').to_s.downcase
       )
     end
 
