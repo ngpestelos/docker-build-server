@@ -2,21 +2,40 @@
   <div id="flash_message"><%= session['flash'] %></div>
   <% session['flash'] = nil %>
 <% end %>
+<% if session['errors'] %>
+  <div id="errors">
+    <% [*session['errors']].each do |error| %>
+      <p class="error-detail"><%= error %></p>
+    <% end %>
+  </div>
+  <% session['errors'] = nil %>
+<% end %>
 <h1><%= title %></h1>
 <form id="docker_build" name="docker_build" action="docker-build" method="post">
+  <div class="row">
+    <label for="url">url</label>
+  </div>
+  <div>
+    <input pattern="(https?|git)://.*"
+      placeholder="https://raw.github.com/<account>/<repository>/master/Dockerfile"
+      size="60" type="text" id="url" name="url" autofocus
+      value="<%= params['url'] %>" />
+  </div>
   <div class="row">
     <label for="repo">repo</label>
   </div>
   <div>
     <input pattern="[-a-zA-Z0-9_/]{2,}" placeholder="<account>/<repository>"
-      size="40" type="text" id="repo" name="repo" required autofocus />
+      size="60" type="text" id="repo" name="repo"
+      value="<%= params['repo'] %>" />
   </div>
   <div class="row">
     <label for="ref">ref</label>
   </div>
   <div>
     <input pattern="[-a-zA-Z0-9_]+" placeholder="<any-valid-git-ref>"
-      size="40" type="text" id="ref" name="ref" required />
+      size="60" type="text" id="ref" name="ref"
+      value="<%= params['ref'] %>" />
   </div>
   <div class="row">
     <label for="tag">tag</label>
@@ -24,14 +43,15 @@
   <div>
     <input pattern="[-a-zA-Z0-9_\.]+[-a-zA-Z0-9_/][-a-zA-Z0-9_/]*:?[a-z]?[a-z0-9_]*"
       placeholder="<namespace>/<project>[:tag]"
-      size="40" type="text" id="tag" name="tag" />
+      size="60" type="text" id="tag" name="tag"
+      value="<%= params['tag'] %>" />
   </div>
   <div class="row">
     <label for="auto_push">auto-push</label>
   </div>
   <div>
     <input type="checkbox" value="true"
-      id="auto_push" name="auto_push" checked />
+      id="auto_push" name="auto_push" <%= 'checked' if params['auto_push'] %> />
   </div>
 
   <h2>notifications</h2>
@@ -41,8 +61,9 @@
   <div>
     <input pattern="[a-zA-Z0-9_]+:[a-z0-9]{40}@[0-9]{5,}"
       placeholder="<subdomain>:<authtoken>@<room>"
-      size="40" type="text" id="notifications_campfire"
-      name="notifications[campfire]" />
+      size="60" type="text" id="notifications_campfire"
+      name="notifications[campfire]"
+      value="<%= (params['notifications'] || {})['campfire'] %>" />
   </div>
   <div class="row">
     <label for="notifications_hipchat">hipchat</label>
@@ -50,8 +71,9 @@
   <div>
     <input pattern="[a-z0-9]{30}@.+"
       placeholder="<authtoken>@<room>"
-      size="40" type="text" id="notifications_hipchat"
-      name="notifications[hipchat]" />
+      size="60" type="text" id="notifications_hipchat"
+      name="notifications[hipchat]"
+      value="<%= (params['notifications'] || {})['hipchat'] %>" />
   </div>
   <div class="row">
     <input type="submit" value="Build!" />
