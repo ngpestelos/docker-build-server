@@ -38,7 +38,8 @@ module DockerBuildServer
         {
           repo: "#{travis_payload['repository']['url']}",
           ref: "#{travis_payload['commit']}",
-          tag: "#{travis_docker_build_cfg['tag']}",
+          tag: "#{travis_docker_build_cfg['tag']}"
+               .gsub(/\$TRAVIS_COMMIT/, "#{travis_payload['commit']}"),
           auto_push: !!travis_docker_build_cfg['auto_push'],
           notifications: travis_docker_build_notifications,
         }
