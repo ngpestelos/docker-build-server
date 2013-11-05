@@ -13,6 +13,7 @@ env:
 notifications:
   email: github+docker-build-server@modcloth.com
 after_success:
+- cd $TRAVIS_BUILD_DIR && bundle install --deployment
 - gem install --no-ri --no-rdoc travis-artifacts
 - mkdir -p ~/tmp/docker-build-server
 - pushd ~/tmp &&
