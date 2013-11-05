@@ -14,7 +14,7 @@ apt-get update -yq
 apt-get install -yq \
   bison \
   build-essential \
-  git-core \
+  git \
   mercurial \
   redis-server \
   vim-nox
