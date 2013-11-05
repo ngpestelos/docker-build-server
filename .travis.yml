@@ -1,9 +1,24 @@
 language: ruby
 rvm:
 - 2.0.0
-- 1.9.3
 env:
   global:
   - COVERAGE=true
+  - ARTIFACTS_AWS_REGION=us-east-1
+  - ARTIFACTS_S3_BUCKET=modcloth-public-travis-artifacts
+  - secure: nlRr+j9WUXXBk8SlNNu0Yq+avnWiEZbf6bko0PODW5SLfGHYiBcqOzUr/lh58StHeL3hy8JmpL7W6qEHX0FvmAlUfV9Rn+rAB3rgBwIBeaJbMVAkzA2q3yHSUkWUkAKeA4smJQhEd+zXXvniTgm/uBx4jT+iMpIwx3+biXKbGcM=
+  - secure: Qk7cQP8nfsntO+NaK+/xuBlOq2PnlYfjykCbh0RSxp+ySoahtiTxDTSVPTJ8HxL2oT8NdKBvIr4WkM69luSzfKj9AL14Ap9RsV/eekGrehIWwqbZY4TmM/4nZ27QPAhq9+axb3YYsA/V3An58PQKp0K6v4orx+Xil2zBGnWodQA=
 notifications:
   email: github+docker-build-server@modcloth.com
+after_success:
+- gem install --no-ri --no-rdoc travis-artifacts
+- mkdir -p ~/tmp/docker-build-server
+- pushd ~/tmp &&
+  rsync -avz $TRAVIS_BUILD_DIR/ ./docker-build-server &&
+  tar cjvf docker-build-server.tar.bz2 docker-build-server
+- travis-artifacts upload
+    --path ~/tmp/docker-build-server.tar.bz2
+    --target-path artifacts/ruby/docker-build-server/$TRAVIS_COMMIT
+- travis-artifacts upload
+    --path ~/tmp/docker-build-server.tar.bz2
+    --target-path artifacts/ruby/docker-build-server/$TRAVIS_BRANCH
