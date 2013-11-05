@@ -21,7 +21,7 @@ module DockerBuildServer
       def travis_payload
         @raw_payload ||= params[:payload]
         @travis_payload ||= MultiJson.decode(@raw_payload) if @raw_payload
-        @travis_payload ||= json_body if json?
+        @travis_payload ||= json_body['payload'] if json?
       end
 
       def travis_docker_build_cfg
