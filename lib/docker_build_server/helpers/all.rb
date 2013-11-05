@@ -2,7 +2,7 @@
 
 module DockerBuildServer
   module Helpers
-    module Core
+    module All
       def docker_build(params)
         build_params = BuildParams.new(params.to_hash)
         DockerBuild.perform_async(build_params.to_hash)
@@ -16,6 +16,11 @@ module DockerBuildServer
           "at #{params['ref'].inspect}"
         )
       end
+
+      include JSON
+      include Title
+      include Travis
+      include Validation
     end
   end
 end
