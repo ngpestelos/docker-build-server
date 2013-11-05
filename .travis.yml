@@ -12,6 +12,11 @@ env:
   - secure: Qk7cQP8nfsntO+NaK+/xuBlOq2PnlYfjykCbh0RSxp+ySoahtiTxDTSVPTJ8HxL2oT8NdKBvIr4WkM69luSzfKj9AL14Ap9RsV/eekGrehIWwqbZY4TmM/4nZ27QPAhq9+axb3YYsA/V3An58PQKp0K6v4orx+Xil2zBGnWodQA=
 notifications:
   email: github+docker-build-server@modcloth.com
+  webhooks:
+    urls:
+    - secure: K773tSeOQTOJQHmAmsYe8KXIwCwm3+AxoCvXtzXpah486A7KXNolcCMeL+q7WO5hFMJvCzXr40IDxjKwl4mf0Ww9q5+CPmVi5NUrMMSF7A3/JGxg2MJe0OMp6NKL8w/b1jNYtYj7iHxMOBrL8UN34cC7o3cNXko+CHVwKsxSvNU=
+    on_success: always
+    on_failure: never
 after_success:
 - cd $TRAVIS_BUILD_DIR && bundle install --deployment
 - gem install --no-ri --no-rdoc travis-artifacts
