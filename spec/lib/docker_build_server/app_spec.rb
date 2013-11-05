@@ -1,7 +1,6 @@
 # vim:fileencoding=utf-8
 
 describe DockerBuildServer::App do
-  include Support
   include Rack::Test::Methods
 
   def app
@@ -115,7 +114,7 @@ describe DockerBuildServer::App do
         before { described_class.any_instance.stub(travis_authorized?: false) }
 
         it 'responds 401' do
-          post travis_webhook_path, valid_travis_payload_json,
+          post Support.travis_webhook_path, Support.valid_travis_payload_json,
                { 'CONTENT_TYPE' => 'application/json' }
           last_response.status.should == 401
         end
@@ -132,7 +131,7 @@ describe DockerBuildServer::App do
 
         context 'when travis payload is missing' do
           it 'responds 400' do
-            post travis_webhook_path
+            post Support.travis_webhook_path
             last_response.status.should == 400
           end
         end
@@ -145,14 +144,15 @@ describe DockerBuildServer::App do
           end
 
           it 'responds 204' do
-            post travis_webhook_path, valid_travis_payload_json,
+            post Support.travis_webhook_path,
+                 Support.valid_travis_payload_json,
                  { 'CONTENT_TYPE' => 'application/json' }
             last_response.status.should == 204
           end
         end
 
         it 'responds 201' do
-          post travis_webhook_path, valid_travis_payload_json,
+          post Support.travis_webhook_path, Support.valid_travis_payload_json,
                { 'CONTENT_TYPE' => 'application/json' }
           last_response.status.should == 201
         end
