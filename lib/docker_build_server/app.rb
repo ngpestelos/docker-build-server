@@ -20,6 +20,7 @@ module DockerBuildServer
     set :views, "#{settings.root}/views"
     set :public_dir, "#{settings.root}/public"
     set :travis_authenticators, Rack::Auth::Travis.default_authenticators
+    enable :logging if ENV['ENABLE_LOGGING']
 
     configure :development do
       set :session_secret, 'shotgun-hack-hack-hack'
