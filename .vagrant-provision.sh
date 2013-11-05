@@ -15,8 +15,6 @@ apt-get install -yq \
   bison \
   build-essential \
   git-core \
-  libxml2-dev \
-  libxslt1-dev \
   mercurial \
   redis-server \
   vim-nox
