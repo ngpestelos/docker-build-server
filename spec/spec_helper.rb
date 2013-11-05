@@ -3,7 +3,6 @@ require 'simplecov'
 require 'docker-build-server'
 
 require 'fakeredis'
-require 'nokogiri'
 require 'rack/test'
 require 'sidekiq'
 

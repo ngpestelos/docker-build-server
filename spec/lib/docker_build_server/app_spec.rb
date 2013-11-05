@@ -24,14 +24,13 @@ describe DockerBuildServer::App do
   describe '/index.html' do
     context 'when request method is GET' do
       before { get '/index.html' }
-      let(:doc) { Nokogiri::HTML(last_response.body) }
 
       it 'is text/html' do
         last_response.content_type.should =~ /text\/html\s*;\s*charset=utf-8/
       end
 
       it 'has a form for requesting builds' do
-        doc.css('form[name="docker_build"]').first.should_not be_nil
+        last_response.body.should =~ /form.*name="docker_build"/im
       end
     end
 
