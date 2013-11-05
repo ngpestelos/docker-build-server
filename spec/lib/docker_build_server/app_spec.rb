@@ -7,7 +7,10 @@ describe DockerBuildServer::App do
     DockerBuildServer::App.new
   end
 
-  before { DockerBuild.stub(:perform_async) }
+  before do
+    authorize 'fizz', 'buzz'
+    DockerBuild.stub(:perform_async)
+  end
 
   it 'redirects "GET /" to "GET /index.html"' do
     get '/'

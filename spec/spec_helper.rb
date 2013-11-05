@@ -20,3 +20,8 @@ end
 Sidekiq.configure_server do |config|
   config.redis = redis_opts
 end
+
+ENV['LOG_LEVEL'] = 'debug'
+ENV['ENABLE_BASIC_AUTH'] = '1'
+ENV['BASIC_AUTH_REALM'] = 'RSpec Land!'
+ENV['BASIC_AUTHZ'] = 'fizz:buzz ham:bone'
