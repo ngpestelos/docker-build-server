@@ -45,7 +45,7 @@ module DockerBuildServer
       logger.level = settings.log_level if settings.logging?
       logger.debug { "log_level #{settings.log_level_string.inspect}" }
       headers 'Docker-Build-Server-Version' => (
-        ENV['VERSION'] || DockerBuildServer::VERSION
+        ENV['VERSION'] || DockerBuildServer.full_version
       )
     end
 
