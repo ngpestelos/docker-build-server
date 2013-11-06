@@ -1,9 +1,9 @@
 # vim:fileencoding=utf-8
-
-require 'rack-auth-travis'
 require 'rack/builder'
 require 'rack/urlmap'
 require 'sidekiq/web'
+
+require_relative 'env_basic_auth'
 
 module DockerBuildServer
   class Builder
@@ -11,10 +11,14 @@ module DockerBuildServer
       dbs = DockerBuildServer::App.new
 
       Rack::Builder.app do
-        run Rack::URLMap.new(
-          '/' => dbs,
-          '/sidekiq' => Sidekiq::Web.new
-        )
+        if ENV['AUTH_TYPE'] == 'basic'
+          realm = ENV['BASIC_AUTH_REALM']
+          use Rack::Auth::Basic, realm do |username, password|
+            DockerBuildServer::EnvBasicAuth.valid?(username, password)
+          end
+        end
+
+        run Rack::URLMap.new('/' => dbs, '/sidekiq' => Sidekiq::Web.new)
       end
     end
   end
