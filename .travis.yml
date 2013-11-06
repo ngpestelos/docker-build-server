@@ -19,6 +19,7 @@ notifications:
     on_failure: never
 after_success:
 - cd $TRAVIS_BUILD_DIR && bundle install --deployment
+- cd $TRAVIS_BUILD_DIR && git describe --always --tags > ./REVISION
 - gem install --no-ri --no-rdoc travis-artifacts
 - mkdir -p ~/tmp/docker-build-server
 - pushd ~/tmp &&

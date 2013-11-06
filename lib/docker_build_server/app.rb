@@ -44,6 +44,9 @@ module DockerBuildServer
     before do
       logger.level = settings.log_level if settings.logging?
       logger.debug { "log_level #{settings.log_level_string.inspect}" }
+      headers 'Docker-Build-Server-Version' => (
+        ENV['VERSION'] || DockerBuildServer.full_version
+      )
     end
 
     get('/') { redirect 'index.html', 301 }
