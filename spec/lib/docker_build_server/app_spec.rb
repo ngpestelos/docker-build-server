@@ -8,6 +8,7 @@ describe DockerBuildServer::App do
   end
 
   before do
+    ENV['VERSION'] = '11'
     ENV['AUTH_TYPE'] = 'basic'
     authorize 'fizz', 'buzz'
     DockerBuild.stub(:perform_async)
@@ -25,6 +26,12 @@ describe DockerBuildServer::App do
   end
 
   describe '/index.html' do
+    it 'includes the "Docker-Build-Server-Version" header' do
+      get '/index.html'
+      last_response.headers.should include('Docker-Build-Server-Version')
+      last_response.headers['Docker-Build-Server-Version'].should == '11'
+    end
+
     context 'when request method is GET' do
       before { get '/index.html' }
 
@@ -58,6 +65,11 @@ describe DockerBuildServer::App do
 
       let(:body) { JSON.parse(last_response.body) }
 
+      it 'includes the "Docker-Build-Server-Version" header' do
+        last_response.headers.should include('Docker-Build-Server-Version')
+        last_response.headers['Docker-Build-Server-Version'].should == '11'
+      end
+
       it 'is application/json' do
         last_response.content_type.should =~
         /application\/json\s*;\s*charset=utf-8/
@@ -77,6 +89,11 @@ describe DockerBuildServer::App do
         post '/docker-build', {
           'repo' => 'octocat/KnifeSpoon', 'ref' => 'bar'
         }, 'HTTP_ACCEPT' => 'text/html'
+      end
+
+      it 'includes the "Docker-Build-Server-Version" header' do
+        last_response.headers.should include('Docker-Build-Server-Version')
+        last_response.headers['Docker-Build-Server-Version'].should == '11'
       end
 
       it 'redirects to "/index.html"' do
@@ -121,6 +138,13 @@ describe DockerBuildServer::App do
                'payload' => Support.valid_travis_payload_json
           last_response.status.should == 401
         end
+
+        it 'includes the "Docker-Build-Server-Version" header' do
+          post Support.travis_webhook_path,
+               'payload' => Support.valid_travis_payload_json
+          last_response.headers.should include('Docker-Build-Server-Version')
+          last_response.headers['Docker-Build-Server-Version'].should == '11'
+        end
       end
 
       context 'when travis authorization is valid' do
@@ -150,6 +174,13 @@ describe DockerBuildServer::App do
             post Support.travis_webhook_path,
                  'payload' => Support.valid_travis_payload_json
             last_response.status.should == 204
+          end
+
+          it 'includes the "Docker-Build-Server-Version" header' do
+            post Support.travis_webhook_path,
+                 'payload' => Support.valid_travis_payload_json
+            last_response.headers.should include('Docker-Build-Server-Version')
+            last_response.headers['Docker-Build-Server-Version'].should == '11'
           end
         end
 
