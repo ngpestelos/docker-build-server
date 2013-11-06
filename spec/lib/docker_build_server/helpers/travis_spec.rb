@@ -50,6 +50,7 @@ describe DockerBuildServer::Helpers::Travis do
   let(:tag) { "fizz.example.com/bar/buzz:#{rand(100..199)}" }
   let(:campfire_cfg) { "flurb:a1b2c3d4@#{rand(50_000..59_999)}" }
   let(:travis_campfire_cfg) { "brrzzt:fabfabfab@#{rand(40_000..49_999)}" }
+  let(:travis_hipchat_cfg) { { 'rooms' => ['a1b2c3d4@Snarf Blatt'] } }
 
   let :travis_payload do
     {
@@ -61,7 +62,8 @@ describe DockerBuildServer::Helpers::Travis do
           'notify_campfire' => campfire_cfg
         },
         'notifications' => {
-          'campfire' => travis_campfire_cfg
+          'campfire' => travis_campfire_cfg,
+          'hipchat' => travis_hipchat_cfg
         }
       }
     }
@@ -100,6 +102,19 @@ describe DockerBuildServer::Helpers::Travis do
     it 'uses the travis campfire notification identifier' do
       helped.travis_build_params[:notifications][:campfire]
         .should == travis_campfire_cfg
+    end
+  end
+
+  context 'when notify_hipchat is true' do
+    before do
+      helped.stub(travis_payload: travis_payload.tap do |p|
+        p['config']['docker_build']['notify_hipchat'] = true
+      end)
+    end
+
+    it 'uses the travis hipchat notification identifier' do
+      helped.travis_build_params[:notifications][:hipchat]
+        .should == travis_hipchat_cfg['rooms'].first
     end
   end
 end

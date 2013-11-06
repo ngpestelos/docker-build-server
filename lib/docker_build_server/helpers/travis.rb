@@ -46,22 +46,26 @@ module DockerBuildServer
         }
       end
 
-      def travis_notifications_campfire
-        (travis_payload['config']['notifications'] || {})['campfire']
+      def travis_notifications(section)
+        cfg = (travis_payload['config']['notifications'] || {})[section]
+        return cfg['rooms'].first if cfg.is_a?(Hash)
+        cfg
       end
 
       def travis_docker_build_notifications
-        notify_campfire = travis_docker_build_cfg['notify_campfire']
+        notifications = {}
 
-        if notify_campfire
-          if notify_campfire == true
-            { campfire: travis_notifications_campfire }
-          else
-            { campfire: notify_campfire }
-          end
-        else
-          {}
+        %w(campfire hipchat).each do |section|
+          cfg = travis_docker_build_cfg["notify_#{section}"]
+
+          notifications.merge!(
+            section.to_sym => travis_notifications(section)
+          ) && next if cfg == true
+
+          notifications.merge!(section.to_sym => cfg) if cfg
         end
+
+        notifications
       end
     end
   end
