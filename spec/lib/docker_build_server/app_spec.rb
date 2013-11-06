@@ -4,10 +4,11 @@ describe DockerBuildServer::App do
   include Rack::Test::Methods
 
   def app
-    DockerBuildServer::App.new
+    DockerBuildServer.app
   end
 
   before do
+    ENV['AUTH_TYPE'] = 'basic'
     authorize 'fizz', 'buzz'
     DockerBuild.stub(:perform_async)
   end
@@ -112,6 +113,8 @@ describe DockerBuildServer::App do
     end
 
     describe Support.travis_webhook_path do
+      before { ENV['AUTH_TYPE'] = 'travis' }
+
       context 'when travis authorization is invalid' do
         before { described_class.any_instance.stub(travis_authorized?: false) }
 

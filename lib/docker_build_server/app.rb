@@ -17,26 +17,15 @@ module DockerBuildServer
     set :root, File.expand_path('../', __FILE__)
     set :views, "#{settings.root}/views"
     set :public_dir, "#{settings.root}/public"
+
     set :travis_authenticators, Rack::Auth::Travis.default_authenticators
-    set :travis_auth_disabled, ENV['AUTH_TYPE'] == 'travis'
-    enable :logging unless ENV['DISABLE_LOGGING']
-    set :log_level_string, (ENV['LOG_LEVEL'] || 'info').upcase
-    set :log_level, Logger.const_get(settings.log_level_string)
+    set(:travis_auth_disabled) { ENV['AUTH_TYPE'] != 'travis' }
+
+    set(:logging) { !ENV['DISABLE_LOGGING'] }
+    set(:log_level_string) { (ENV['LOG_LEVEL'] || 'info').upcase }
+    set(:log_level) { Logger.const_get(settings.log_level_string) }
+
     enable :sessions
-
-    if ENV['AUTH_TYPE'] == 'basic'
-      authz = ENV['BASIC_AUTHZ'].to_s.split.each_with_object({}) do |u, a|
-        key, value = u.split(':', 2)
-        a[URI.unescape(key)] = URI.unescape(value)
-      end
-
-      set :basic_authz, authz
-
-      use Rack::Auth::Basic, ENV['BASIC_AUTH_REALM'] do |username, password|
-        settings.basic_authz.key?(username) &&
-          settings.basic_authz.fetch(username) == password
-      end
-    end
 
     configure :development do
       set :session_secret, 'shotgun-hack-hack-hack'
@@ -54,10 +43,7 @@ module DockerBuildServer
 
     before do
       logger.level = settings.log_level if settings.logging?
-      logger.debug do
-        "log_level #{settings.log_level.inspect} " <<
-        "(#{settings.log_level_string.inspect})"
-      end
+      logger.debug { "log_level #{settings.log_level_string.inspect}" }
     end
 
     get('/') { redirect 'index.html', 301 }
