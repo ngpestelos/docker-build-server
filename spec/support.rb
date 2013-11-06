@@ -3,83 +3,96 @@ require 'multi_json'
 
 module Support
   PAYLOAD_TMPL = {
-    'payload' => {
-      'id' => 1,
-      'number' => 1,
-      'status' => nil,
-      'started_at' => nil,
-      'finished_at' => nil,
-      'status_message' => 'Passed',
-      'commit' => '62aae5f70ceee39123ef',
-      'branch' => 'master',
-      'message' => 'the commit message',
-      'compare_url' => (
-        'https://github.com/___OWNER___/minimal/compare/master...develop'
-      ),
-      'committed_at' => '2011-11-11T11: 11: 11Z',
-      'committer_name' => 'Sven Fuchs',
-      'committer_email' => 'svenfuchs@artweb-design.de',
-      'author_name' => 'Sven Fuchs',
-      'author_email' => 'svenfuchs@artweb-design.de',
-      'repository' => {
-        'id' => 1,
-        'name' => '___REPO___',
-        'owner_name' => '___OWNER___',
-        'url' => 'http://github.com/___OWNER___/minimal'
+    'id' => 13_550_100,
+    'repository' => {
+      'id' => 1_500_429,
+      'name' => 'cloaked-octo-nemesis',
+      'owner_name' => 'modcloth-labs',
+      'url' => nil
+    },
+    'number' => '4',
+    'config' => {
+      'language' => 'ruby',
+      'install' => 'echo um hum',
+      'script' => 'echo wat',
+      'notifications' => {
+        'webhooks' => {
+          'urls' => [
+            {
+              'secure' => 'ef5mUXxlhrC...',
+            }
+          ],
+          'on_success' => 'always',
+          'on_failure' => 'never'
+        }
       },
-      'matrix' => [
-        {
-          'id' => 2,
-          'repository_id' => 1,
-          'number' => '1.1',
-          'state' => 'created',
-          'started_at' => nil,
-          'finished_at' => nil,
-          'config' => {
-            'notifications' => {
-              'webhooks' => [
-                'http://evome.fr/notifications',
-                'http://example.com/'
-              ]
+      '.result' => 'configured'
+    },
+    'status' => 0,
+    'result' => 0,
+    'status_message' => 'Passed',
+    'result_message' => 'Passed',
+    'started_at' => '2013-11-06T05:58:46Z',
+    'finished_at' => '2013-11-06T05:59:01Z',
+    'duration' => 15,
+    'build_url' => 'https://travis-ci.org/modcloth-labs/' <<
+                   'cloaked-octo-nemesis/builds/13550100',
+    'commit' => '2ea322561df779c9de6f452ec6b14eff2b58467a',
+    'branch' => 'master',
+    'message' => 'Pointing at new webhook URL',
+    'compare_url' => 'https://github.com/modcloth-labs/' <<
+                     'cloaked-octo-nemesis/compare/' <<
+                     '5a03488e375c...2ea322561df7',
+    'committed_at' => '2013-11-05T22:04:27Z',
+    'author_name' => 'Dan Buch',
+    'author_email' => 'd.buch@modcloth.com',
+    'committer_name' => 'Dan Buch',
+    'committer_email' => 'd.buch@modcloth.com',
+    'matrix' => [
+      {
+        'id' => 13_550_102,
+        'repository_id' => 1_500_429,
+        'parent_id' => 13_550_100,
+        'number' => '4.1',
+        'state' => 'finished',
+        'config' => {
+          'language' => 'ruby',
+          'install' => 'echo um hum',
+          'script' => 'echo wat',
+          'notifications' => {
+            'webhooks' => {
+              'urls' => [
+                {
+                  'secure' => 'ef5mUXxlhrCY...'
+                }
+              ],
+              'on_success' => 'always',
+              'on_failure' => 'never'
             }
           },
-          'status' => nil,
-          'log' => '',
-          'result' => nil,
-          'parent_id' => 1,
-          'commit' => '62aae5f70ceee39123ef',
-          'branch' => 'master',
-          'message' => 'the commit message',
-          'committed_at' => '2011-11-11T11: 11: 11Z',
-          'committer_name' => 'Sven Fuchs',
-          'committer_email' => 'svenfuchs@artweb-design.de',
-          'author_name' => 'Sven Fuchs',
-          'author_email' => 'svenfuchs@artweb-design.de',
-          'compare_url' => (
-            'https://github.com/___OWNER___/minimal/compare/master...develop'
-          )
-        }
-      ]
-    }
+          '.result' => 'configured'
+        },
+        'status' => nil,
+        'result' => nil,
+        'commit' => '2ea322561df779c9de6f452ec6b14eff2b58467a',
+        'branch' => 'master',
+        'message' => 'Pointing at new webhook URL',
+        'compare_url' => 'https://github.com/modcloth-labs/' <<
+                         'cloaked-octo-nemesis/compare/' <<
+                         '5a03488e375c...2ea322561df7',
+        'committed_at' => '2013-11-05T22:04:27Z',
+        'author_name' => 'Dan Buch',
+        'author_email' => 'd.buch@modcloth.com',
+        'committer_name' => 'Dan Buch',
+        'committer_email' => 'd.buch@modcloth.com',
+        'finished_at' => '2013-11-06T05:59:01Z'
+      }
+    ],
+    'type' => 'push'
   }.freeze
 
-  def self.valid_travis_payload(owner = 'foo', repo = 'bar')
-    PAYLOAD_TMPL.clone.tap do |payload|
-      substitute_payload_vars!(payload['payload'], owner, repo)
-    end
-  end
-
-  def self.substitute_payload_vars!(payload, owner, repo)
-    payload['compare_url'] = payload['compare_url'].sub(/___OWNER___/, owner)
-    payload['repository'].merge!(
-      'name' => repo,
-      'owner_name' => owner,
-      'url' => payload['repository']['url'].sub(/___OWNER___/, owner)
-    )
-    compare_url = payload['matrix'].first['compare_url']
-    payload['matrix'].first.merge!(
-      'compare_url' => compare_url.sub(/___OWNER___/, owner)
-    )
+  def self.valid_travis_payload
+    PAYLOAD_TMPL.dup
   end
 
   def self.valid_travis_payload_json

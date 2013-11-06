@@ -5,6 +5,9 @@ AllCops:
     - Gemfile
     - bin/docker-build-server
     - docker-build-server.gemspec
+  Excludes:
+    - vendor/**/*.rb
+    - tmp/*.rb
 
 Documentation:
   Enabled: false
