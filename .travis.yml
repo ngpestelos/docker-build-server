@@ -14,7 +14,7 @@ notifications:
   email: github+docker-build-server@modcloth.com
   webhooks:
     urls:
-    - secure: K773tSeOQTOJQHmAmsYe8KXIwCwm3+AxoCvXtzXpah486A7KXNolcCMeL+q7WO5hFMJvCzXr40IDxjKwl4mf0Ww9q5+CPmVi5NUrMMSF7A3/JGxg2MJe0OMp6NKL8w/b1jNYtYj7iHxMOBrL8UN34cC7o3cNXko+CHVwKsxSvNU=
+    - secure: DZNm2+u/5aY5aCvVy8Go8uo4vnfy78//Z/qjNWJ0MiVfYvFi6jyx62hRe2AzVRe6t7YR2dZuDmzgDslt+9KZqGNu8vGIBpwwWivweavcljuBNoG4j0klMgdSQuMjRQHRLJ4IZb8FtmVbac9xWWn/7E8VOS3h3BsckT8NwwYSL9I=
     on_success: always
     on_failure: never
 after_success:
