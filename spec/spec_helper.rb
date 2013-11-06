@@ -22,6 +22,6 @@ Sidekiq.configure_server do |config|
 end
 
 ENV['LOG_LEVEL'] = 'debug'
-ENV['ENABLE_BASIC_AUTH'] = '1'
+ENV['AUTH_TYPE'] = 'basic'
 ENV['BASIC_AUTH_REALM'] = 'RSpec Land!'
 ENV['BASIC_AUTHZ'] = 'fizz:buzz ham:bone'

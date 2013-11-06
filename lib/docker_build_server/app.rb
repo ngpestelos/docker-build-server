@@ -18,13 +18,13 @@ module DockerBuildServer
     set :views, "#{settings.root}/views"
     set :public_dir, "#{settings.root}/public"
     set :travis_authenticators, Rack::Auth::Travis.default_authenticators
-    set :travis_auth_disabled, !!ENV['DISABLE_TRAVIS_AUTH']
-    enable :logging if ENV['ENABLE_LOGGING']
+    set :travis_auth_disabled, ENV['AUTH_TYPE'] == 'travis'
+    enable :logging unless ENV['DISABLE_LOGGING']
     set :log_level_string, (ENV['LOG_LEVEL'] || 'info').upcase
     set :log_level, Logger.const_get(settings.log_level_string)
     enable :sessions
 
-    if ENV['ENABLE_BASIC_AUTH']
+    if ENV['AUTH_TYPE'] == 'basic'
       authz = ENV['BASIC_AUTHZ'].to_s.split.each_with_object({}) do |u, a|
         key, value = u.split(':', 2)
         a[URI.unescape(key)] = URI.unescape(value)
