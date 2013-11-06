@@ -53,9 +53,14 @@ notifications:
     on_failure: never
 ```
 
-You may notice that the webhook URL does not contain basic auth.  This is
-because the Travis webhook route uses
+You may notice that in this case the webhook URL does not contain basic auth.
+This is because the Travis webhook route may be configured to use
 [rack-auth-travis](https://github.com/modcloth-labs/rack-auth-travis) to
-authenticate requests from Travis-CI.  This means that you'll have to ensure the
-`docker-build-server` is run with the necessary `TRAVIS_AUTH_*` environmental
-variables present.
+authenticate requests from Travis-CI by setting `AUTH_TYPE='travis'`.  Doing so
+also requires the `docker-build-server` is run with the necessary
+`TRAVIS_AUTH_*` environmental variables present.
+
+Alternatively, basic authentication may be used by setting `AUTH_TYPE='basic'`
+and providing `BASIC_AUTHZ='user:pass user:pass'`, which should be
+whitespace-delimited `username:password` pairs.  The values for `username` and
+`password` may be url-encoded in order to include whitespace and colons.
