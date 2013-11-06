@@ -51,10 +51,9 @@ describe DockerBuildServer::App do
   describe 'POST /docker-build' do
     context 'when Accept is application/json' do
       before do
-        post '/docker-build', '{"repo":"octocat/KnifeSpoon","ref":"bar"}', {
-          'HTTP_ACCEPT' => 'application/json',
-          'CONTENT_TYPE' => 'application/json'
-        }
+        post '/docker-build', '{"repo":"octocat/KnifeSpoon","ref":"bar"}',
+             'HTTP_ACCEPT' => 'application/json',
+             'CONTENT_TYPE' => 'application/json'
       end
 
       let(:body) { JSON.parse(last_response.body) }
@@ -77,7 +76,7 @@ describe DockerBuildServer::App do
       before do
         post '/docker-build', {
           'repo' => 'octocat/KnifeSpoon', 'ref' => 'bar'
-        }, { 'HTTP_ACCEPT' => 'text/html' }
+        }, 'HTTP_ACCEPT' => 'text/html'
       end
 
       it 'redirects to "/index.html"' do
@@ -90,7 +89,7 @@ describe DockerBuildServer::App do
       context 'when Accept is text/html' do
         before do
           post '/docker-build', { 'url' => 'herp' },
-               { 'HTTP_ACCEPT' => 'text/html' }
+               'HTTP_ACCEPT' => 'text/html'
         end
 
         it 'responds 400' do
@@ -100,10 +99,9 @@ describe DockerBuildServer::App do
 
       context 'when Accept is application/json' do
         before do
-          post '/docker-build', '{"url":"herp"}', {
-            'HTTP_ACCEPT' => 'application/json',
-            'CONTENT_TYPE' => 'application/json'
-          }
+          post '/docker-build', '{"url":"herp"}',
+               'HTTP_ACCEPT' => 'application/json',
+               'CONTENT_TYPE' => 'application/json'
         end
 
         it 'responds 400' do
@@ -120,7 +118,7 @@ describe DockerBuildServer::App do
 
         it 'responds 401' do
           post Support.travis_webhook_path,
-               { 'payload' => Support.valid_travis_payload_json }
+               'payload' => Support.valid_travis_payload_json
           last_response.status.should == 401
         end
       end
@@ -150,14 +148,14 @@ describe DockerBuildServer::App do
 
           it 'responds 204' do
             post Support.travis_webhook_path,
-                 { 'payload' => Support.valid_travis_payload_json }
+                 'payload' => Support.valid_travis_payload_json
             last_response.status.should == 204
           end
         end
 
         it 'responds 201' do
           post Support.travis_webhook_path,
-               { 'payload' => Support.valid_travis_payload_json }
+               'payload' => Support.valid_travis_payload_json
           last_response.status.should == 201
         end
       end
