@@ -95,12 +95,15 @@ module DockerBuildServer
 
     post ENV['TRAVIS_WEBHOOK_PATH'] || '/travis-webhook' do
       logger.debug do
+        request.body.rewind
         %W(
           authorization=#{request.env['HTTP_AUTHORIZATION'].inspect}
           travis_repo_slug=#{request.env['HTTP_TRAVIS_REPO_SLUG'].inspect}
           travis_authorized?=#{travis_authorized?.inspect}
-        ).join(', ')
+          request.body=#{request.body.read.inspect}
+        ).join(' ')
       end
+      request.body.rewind
 
       halt 401 unless settings.travis_auth_disabled? || travis_authorized?
       halt 400 unless travis_payload
