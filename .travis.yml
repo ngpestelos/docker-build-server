@@ -12,6 +12,9 @@ env:
   - secure: Qk7cQP8nfsntO+NaK+/xuBlOq2PnlYfjykCbh0RSxp+ySoahtiTxDTSVPTJ8HxL2oT8NdKBvIr4WkM69luSzfKj9AL14Ap9RsV/eekGrehIWwqbZY4TmM/4nZ27QPAhq9+axb3YYsA/V3An58PQKp0K6v4orx+Xil2zBGnWodQA=
 notifications:
   email: github+docker-build-server@modcloth.com
+  irc:
+    channels:
+    - 'chat.freenode.net#ModCloth'
   webhooks:
     urls:
     - secure: DZNm2+u/5aY5aCvVy8Go8uo4vnfy78//Z/qjNWJ0MiVfYvFi6jyx62hRe2AzVRe6t7YR2dZuDmzgDslt+9KZqGNu8vGIBpwwWivweavcljuBNoG4j0klMgdSQuMjRQHRLJ4IZb8FtmVbac9xWWn/7E8VOS3h3BsckT8NwwYSL9I=
