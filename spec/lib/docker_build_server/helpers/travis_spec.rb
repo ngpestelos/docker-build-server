@@ -117,4 +117,38 @@ describe DockerBuildServer::Helpers::Travis do
         .should == travis_hipchat_cfg['rooms'].first
     end
   end
+
+  describe 'docker tag substitutions' do
+    let :travis_payload do
+      {
+        'commit' => 'ea3cff93e64d244197c6dca43b5b9f495d028dd7',
+        'branch' => 'fizz-buzz-9000',
+        'config' => {
+          'docker_build' => {
+            'tag' => 'derp/$TRAVIS_COMMIT/$TRAVIS_SHORT_COMMIT/' <<
+                     '$TRAVIS_BRANCH'
+          }
+        }
+      }
+    end
+
+    before do
+      helped.stub(travis_payload: travis_payload)
+    end
+
+    it 'replaces $TRAVIS_COMMIT with the full commit hash' do
+      helped.travis_docker_build_tag
+        .should =~ %r{/ea3cff93e64d244197c6dca43b5b9f495d028dd7/}
+    end
+
+    it 'replaces $TRAVIS_SHORT_COMMIT with the first 7 chars of the hash' do
+      helped.travis_docker_build_tag
+        .should =~ %r{/ea3cff9/}
+    end
+
+    it 'replaces $TRAVIS_BRANCH with the branch name' do
+      helped.travis_docker_build_tag
+        .should =~ /\/fizz-buzz-9000/
+    end
+  end
 end
