@@ -39,11 +39,22 @@ module DockerBuildServer
         {
           repo: "#{travis_payload['repository']['url']}",
           ref: "#{travis_payload['commit']}",
-          tag: "#{travis_docker_build_cfg['tag']}"
-               .gsub(/\$TRAVIS_COMMIT/, "#{travis_payload['commit']}"),
+          tag: travis_docker_build_tag,
           auto_push: !!travis_docker_build_cfg['auto_push'],
           notifications: travis_docker_build_notifications,
         }
+      end
+
+      def travis_docker_build_tag
+        tag = "#{travis_docker_build_cfg['tag']}"
+        {
+          'TRAVIS_COMMIT' => "#{travis_payload['commit']}",
+          'TRAVIS_SHORT_COMMIT' => "#{travis_payload['commit']}"[0, 7],
+          'TRAVIS_BRANCH' => "#{travis_payload['branch']}"
+        }.each do |var, replacement|
+          tag = tag.gsub(/\$#{var}/, replacement)
+        end
+        tag
       end
 
       def travis_notifications(section)

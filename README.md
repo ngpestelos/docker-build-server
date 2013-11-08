@@ -53,6 +53,9 @@ notifications:
     on_failure: never
 ```
 
+In addition to `$TRAVIS_COMMIT`, `$TRAVIS_SHORT_COMMIT` and `$TRAVIS_BRANCH`
+will also be replaced in the `tag` key.
+
 You may notice that in this case the webhook URL does not contain basic auth.
 This is because the Travis webhook route may be configured to use
 [rack-auth-travis](https://github.com/modcloth-labs/rack-auth-travis) to
