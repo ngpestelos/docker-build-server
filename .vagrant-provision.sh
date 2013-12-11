@@ -17,6 +17,7 @@ apt-get install -yq \
   git \
   mercurial \
   redis-server \
+  screen \
   vim-nox
 
 ln -svf /vagrant/.vagrant-skel/redis.conf /etc/redis/redis.conf
