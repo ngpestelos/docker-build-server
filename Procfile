@@ -1,2 +1,2 @@
-server: bundle exec unicorn -c .unicorn.conf -p $PORT -E $RACK_ENV
-worker: docker-build-worker -namespace=$REDIS_NAMESPACE -queues=$DOCKER_BUILD_QUEUE -t=$GITHUB_API_TOKEN -uri=$REDIS_URL
+server: bundle exec puma -e $RAILS_ENV -p 5000 -C config/puma.rb
+worker: builder -work -namespace=$REDIS_NAMESPACE -queues=$DOCKER_BUILD_QUEUE -uri=$REDIS_URL

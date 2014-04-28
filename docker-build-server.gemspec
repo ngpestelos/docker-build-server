@@ -7,8 +7,8 @@ require 'English'
 Gem::Specification.new do |spec|
   spec.name = 'docker-build-server'
   spec.version = DockerBuildServer::VERSION
-  spec.authors = ['Dan Buch', 'Nicola Adamchik']
-  spec.email = ['d.buch@modcloth.com', 'n.adamchik@modcloth.com']
+  spec.authors = ['Dan Buch', 'Nicola Adamchik', 'Rafe Colton']
+  spec.email = ['d.buch@modcloth.com', 'n.adamchik@modcloth.com', 'r.colton@modcloth.com']
   spec.summary = %q{HTTP Server that receives requests for docker build jobs}
   spec.description = spec.summary
   spec.homepage = 'https://github.com/modcloth-labs/docker-build-worker'
