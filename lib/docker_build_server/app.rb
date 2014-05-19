@@ -63,8 +63,7 @@ module DockerBuildServer
       build_params = json_body if json?
       logger.debug { "build_params=#{build_params.inspect}" }
 
-      # errors = validate_build_params(build_params)
-      errors = []
+      errors = validate_build_params(build_params)
       unless errors.empty?
         respond_to do |f|
           f.html do
