@@ -152,7 +152,7 @@ describe DockerBuildServer::App do
           described_class.any_instance.stub(
             travis_authorized?: true,
             docker_build: {},
-            travis_build_params: {},
+            travis_build_params: {}
           )
         end
 

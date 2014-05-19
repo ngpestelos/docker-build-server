@@ -19,7 +19,7 @@ module Support
         'webhooks' => {
           'urls' => [
             {
-              'secure' => 'ef5mUXxlhrC...',
+              'secure' => 'ef5mUXxlhrC...'
             }
           ],
           'on_success' => 'always',
@@ -35,13 +35,13 @@ module Support
     'started_at' => '2013-11-06T05:58:46Z',
     'finished_at' => '2013-11-06T05:59:01Z',
     'duration' => 15,
-    'build_url' => 'https://travis-ci.org/modcloth-labs/' <<
+    'build_url' => 'https://travis-ci.org/modcloth-labs/' \
                    'cloaked-octo-nemesis/builds/13550100',
     'commit' => '2ea322561df779c9de6f452ec6b14eff2b58467a',
     'branch' => 'master',
     'message' => 'Pointing at new webhook URL',
-    'compare_url' => 'https://github.com/modcloth-labs/' <<
-                     'cloaked-octo-nemesis/compare/' <<
+    'compare_url' => 'https://github.com/modcloth-labs/' \
+                     'cloaked-octo-nemesis/compare/' \
                      '5a03488e375c...2ea322561df7',
     'committed_at' => '2013-11-05T22:04:27Z',
     'author_name' => 'Dan Buch',
@@ -77,8 +77,8 @@ module Support
         'commit' => '2ea322561df779c9de6f452ec6b14eff2b58467a',
         'branch' => 'master',
         'message' => 'Pointing at new webhook URL',
-        'compare_url' => 'https://github.com/modcloth-labs/' <<
-                         'cloaked-octo-nemesis/compare/' <<
+        'compare_url' => 'https://github.com/modcloth-labs/' \
+                         'cloaked-octo-nemesis/compare/' \
                          '5a03488e375c...2ea322561df7',
         'committed_at' => '2013-11-05T22:04:27Z',
         'author_name' => 'Dan Buch',

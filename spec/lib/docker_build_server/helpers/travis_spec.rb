@@ -10,12 +10,12 @@ describe DockerBuildServer::Helpers::Travis do
   let :env do
     {
       'CONTENT_TYPE' => 'application/json',
-      'HTTP_AUTHORIZATION' => 'a' * 64,
+      'HTTP_AUTHORIZATION' => 'a' * 64
     }
   end
 
   let :request do
-    Rack::MockRequest.new(->(env) { [200, {}, []] }).tap do |req|
+    Rack::MockRequest.new(->(_env) { [200, {}, []] }).tap do |req|
       req.stub(env: env)
     end
   end
@@ -125,8 +125,7 @@ describe DockerBuildServer::Helpers::Travis do
         'branch' => 'fizz-buzz-9000',
         'config' => {
           'docker_build' => {
-            'tag' => 'derp/$TRAVIS_COMMIT/$TRAVIS_SHORT_COMMIT/' <<
-                     '$TRAVIS_BRANCH'
+            'tag' => 'derp/$TRAVIS_COMMIT/$TRAVIS_SHORT_COMMIT/$TRAVIS_BRANCH'
           }
         }
       }

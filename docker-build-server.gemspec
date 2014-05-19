@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version = DockerBuildServer::VERSION
   spec.authors = ['Dan Buch', 'Nicola Adamchik', 'Rafe Colton']
   spec.email = ['d.buch@modcloth.com', 'n.adamchik@modcloth.com', 'r.colton@modcloth.com']
-  spec.summary = %q{HTTP Server that receives requests for docker build jobs}
+  spec.summary = %q(HTTP Server that receives requests for docker build jobs)
   spec.description = spec.summary
   spec.homepage = 'https://github.com/modcloth-labs/docker-build-worker'
   spec.license = 'MIT'

@@ -1,3 +1,4 @@
+# rubocop:disable NonNilCheck
 # vim:fileencoding=utf-8
 
 module DockerBuildServer
@@ -8,8 +9,7 @@ module DockerBuildServer
       TAG_REGEX = %r{[^/]+/[^/]+(:.+)?}
 
       def validate_build_params(build_params)
-        unless param_present?('pwd', build_params) &&
-               param_present?('build', build_params)
+        if !param_present?('pwd', build_params) || !param_present?('build', build_params)
           ['Both "pwd" and "build" and required']
         else
           []

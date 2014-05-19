@@ -41,7 +41,7 @@ module DockerBuildServer
           ref: "#{travis_payload['commit']}",
           tag: travis_docker_build_tag,
           auto_push: !!travis_docker_build_cfg['auto_push'],
-          notifications: travis_docker_build_notifications,
+          notifications: travis_docker_build_notifications
         }
       end
 

@@ -1,6 +1,6 @@
 # vim:fileencoding=utf-8
 require 'simplecov'
-require 'docker-build-server'
+require 'docker_build_server'
 
 require 'fakeredis'
 require 'rack/test'
