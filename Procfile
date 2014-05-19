@@ -1,2 +1,2 @@
 server: bundle exec puma -e $RACK_ENV -p $PORT -C config/puma.rb
-worker: builder -work -namespace=$REDIS_NAMESPACE -queues=$DOCKER_BUILD_QUEUE -uri=$REDIS_URL
+worker: docker-build-worker -namespace=$REDIS_NAMESPACE -queues=$DOCKER_BUILD_QUEUE -t=$GITHUB_API_TOKEN -uri=$REDIS_URL
