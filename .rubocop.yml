@@ -17,3 +17,6 @@ DoubleNegation:
 
 LineLength:
   Max: 100
+
+RegexpLiteral:
+  Enabled: false
