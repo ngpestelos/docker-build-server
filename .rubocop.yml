@@ -1,13 +1,22 @@
 AllCops:
-  Includes:
+  Include:
     - Rakefile
     - config.ru
     - Gemfile
     - bin/docker-build-server
     - docker-build-server.gemspec
-  Excludes:
+  Exclude:
     - vendor/**/*.rb
     - tmp/*.rb
 
 Documentation:
+  Enabled: false
+
+DoubleNegation:
+  Enabled: false
+
+LineLength:
+  Max: 100
+
+RegexpLiteral:
   Enabled: false

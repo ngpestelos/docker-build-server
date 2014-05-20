@@ -6,7 +6,7 @@ module DockerBuildServer
   def self.full_version
     return @revision if @revision
     revfile = File.expand_path('../../../REVISION', __FILE__)
-    if File.exists?(revfile)
+    if File.exist?(revfile)
       @revision = File.read(revfile).chomp
     else
       @revision = VERSION

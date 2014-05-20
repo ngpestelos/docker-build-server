@@ -7,9 +7,9 @@ require 'English'
 Gem::Specification.new do |spec|
   spec.name = 'docker-build-server'
   spec.version = DockerBuildServer::VERSION
-  spec.authors = ['Dan Buch', 'Nicola Adamchik']
-  spec.email = ['d.buch@modcloth.com', 'n.adamchik@modcloth.com']
-  spec.summary = %q{HTTP Server that receives requests for docker build jobs}
+  spec.authors = ['Dan Buch', 'Nicola Adamchik', 'Rafe Colton']
+  spec.email = ['d.buch@modcloth.com', 'n.adamchik@modcloth.com', 'r.colton@modcloth.com']
+  spec.summary = %q(HTTP Server that receives requests for docker build jobs)
   spec.description = spec.summary
   spec.homepage = 'https://github.com/modcloth-labs/docker-build-worker'
   spec.license = 'MIT'
@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'fakeredis'
+  spec.add_development_dependency 'foreman'
   spec.add_development_dependency 'guard'
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'guard-shell'

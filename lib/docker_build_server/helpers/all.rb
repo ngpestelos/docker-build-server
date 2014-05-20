@@ -12,8 +12,7 @@ module DockerBuildServer
         ) if params['url']
 
         build_params.to_hash.merge(
-          'message' => "Building #{params['repo'].inspect} " <<
-          "at #{params['ref'].inspect}"
+          'message' => "Building #{params['repo'].inspect} at #{params['ref'].inspect}"
         )
       end
 

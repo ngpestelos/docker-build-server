@@ -1,0 +1,8 @@
+#!/bin/bash
+
+curl -XPOST http://localhost:5000/docker-build -d "
+  {
+    \"pwd\": \"$HOME/workspace/recommendations-service\",
+    \"build\": \"bob.toml\"
+  }" \
+  -H "Content-Type:application/json"

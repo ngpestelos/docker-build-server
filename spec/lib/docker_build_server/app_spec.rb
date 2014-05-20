@@ -71,8 +71,7 @@ describe DockerBuildServer::App do
       end
 
       it 'is application/json' do
-        last_response.content_type.should =~
-        /application\/json\s*;\s*charset=utf-8/
+        last_response.content_type.should =~ %r{^application/json}
       end
 
       it 'is valid JSON' do
@@ -152,7 +151,7 @@ describe DockerBuildServer::App do
           described_class.any_instance.stub(
             travis_authorized?: true,
             docker_build: {},
-            travis_build_params: {},
+            travis_build_params: {}
           )
         end
 

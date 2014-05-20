@@ -1,3 +1,4 @@
+# rubocop:disable NonNilCheck
 # vim:fileencoding=utf-8
 
 module DockerBuildServer
@@ -8,8 +9,7 @@ module DockerBuildServer
       TAG_REGEX = %r{[^/]+/[^/]+(:.+)?}
 
       def validate_build_params(build_params)
-        unless param_present?('url', build_params) ||
-               param_present?('repo', build_params)
+        if !param_present?('url', build_params) && !param_present?('repo', build_params)
           return ['Either "url" or "repo" is required']
         end
 
@@ -27,12 +27,12 @@ module DockerBuildServer
 
       def validate_url_given(build_params)
         return [
-          %Q{The "url" must match #{URL_REGEX.inspect}}
+          %Q(The "url" must match #{URL_REGEX.inspect})
         ] if build_params['url'] !~ URL_REGEX
 
         %w(repo ref).each do |field|
           return [
-            %Q{If "url" is provided, then "#{field}" must not be present}
+            %Q(If "url" is provided, then "#{field}" must not be present)
           ] if param_present?(field, build_params)
         end
 
@@ -41,7 +41,7 @@ module DockerBuildServer
 
       def validate_repo_given(build_params)
         return [
-          %Q{The "repo" must be a github <account>/<repo> or full URL}
+          %Q(The "repo" must be a github <account>/<repo> or full URL)
         ] unless build_params['repo'] =~ REPO_REGEX
 
         []
@@ -55,7 +55,7 @@ module DockerBuildServer
         ] unless build_params['tag']
 
         return [
-          %Q{The "tag" must match #{TAG_REGEX.inspect}}
+          %Q(The "tag" must match #{TAG_REGEX.inspect})
         ] if build_params['tag'] !~ TAG_REGEX
 
         []
