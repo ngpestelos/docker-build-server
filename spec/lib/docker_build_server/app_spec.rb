@@ -71,7 +71,7 @@ describe DockerBuildServer::App do
       end
 
       it 'is application/json' do
-        last_response.content_type.should =~ %r{application/json}
+        last_response.content_type.should =~ %r{^application/json}
       end
 
       it 'is valid JSON' do
